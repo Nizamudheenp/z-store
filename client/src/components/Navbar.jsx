@@ -1,18 +1,47 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { logout } from '../features/auth/authSlice';
+import { toast } from 'sonner';
 
 const Navbar = () => {
-    return (
-        <nav className="bg-gray-800 text-white p-6">
-            <div className="container mx-auto flex justify-between items-center">
-                <Link to="/" className="text-lg font-bold">Z-Store</Link>
-                <div className="flex gap-4">
-                    <Link to="/login">Login</Link>
-                    <Link to="/register">Register</Link>
-                </div>
-            </div>
-        </nav>
-    )
-}
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
 
-export default Navbar
+  const handleLogout = () => {
+    dispatch(logout());
+    toast.success('Logged out');
+    navigate('/');
+  };
+
+  return (
+    <nav className="bg-gray-800 text-white p-4 flex justify-between">
+      <Link to="/" className="font-bold text-xl">E-Store</Link>
+
+      <div className="space-x-4">
+        {user ? (
+          <>
+            <Link to="/">Home</Link>
+            {user.role === 'admin' ? (
+              <Link to="/admin/products">Dashboard</Link>
+            ) : (
+              <>
+                <Link to="/cart">Cart</Link>
+                <Link to="/wishlist">Wishlist</Link>
+                <Link to="/orders">My Orders</Link>
+              </>
+            )}
+            <button onClick={handleLogout}>Logout</button>
+          </>
+        ) : (
+          <>
+            <Link to="/login">Login</Link>
+            <Link to="/register">Register</Link>
+          </>
+        )}
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;
