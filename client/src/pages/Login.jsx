@@ -19,7 +19,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await api.post('/auth/login', formData);
-      dispatch(loginSuccess(res.data.user));
+      dispatch(loginSuccess(res.data));
       toast.success('Login successful');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Login failed');

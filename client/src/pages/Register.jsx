@@ -21,7 +21,7 @@ const Register = () => {
         e.preventDefault();
         try {
             const res = await api.post('/auth/register', formData);
-            dispatch(registerSuccess(res.data.user));
+            dispatch(registerSuccess(res.data));
             toast.success('Registered successfully');
         } catch (error) {
             toast.error(error.response?.data?.message || 'Registration failed')

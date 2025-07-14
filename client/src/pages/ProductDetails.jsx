@@ -2,7 +2,9 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedProduct } from '../features/product/productSlice';
+import { setCart } from '../features/cart/cartSlice';
 import api from '../api/api';
+import { toast } from 'sonner';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -11,11 +13,28 @@ const ProductDetails = () => {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const res = await api.get(`/products/${id}`);
-      dispatch(setSelectedProduct(res.data));
+      try {
+        const res = await api.get(`/products/${id}`);
+        dispatch(setSelectedProduct(res.data));
+      } catch (err) {
+        toast.error('Failed to load product');
+      }
     };
     fetchProduct();
   }, [dispatch, id]);
+
+  const handleAddToCart = async () => {
+    try {
+      const res = await api.post('/cart/add', {
+        productId: selectedProduct._id,
+        quantity: 1,
+      });
+      dispatch(setCart(res.data.cart.items));
+      toast.success('Added to cart');
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Error adding to cart');
+    }
+  };
 
   if (!selectedProduct) return <div className="p-8">Loading...</div>;
 
@@ -25,6 +44,13 @@ const ProductDetails = () => {
       <h2 className="text-3xl font-bold mt-4">{selectedProduct.title}</h2>
       <p className="mt-2 text-gray-600">{selectedProduct.description}</p>
       <p className="mt-4 text-2xl font-semibold text-green-600">₹ {selectedProduct.price}</p>
+
+      <button 
+        onClick={handleAddToCart} 
+        className="mt-6 bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+      >
+        Add to Cart
+      </button>
     </div>
   );
 };

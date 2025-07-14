@@ -40,7 +40,7 @@ exports.getProducts = async (req, res) => {
     const query = {};
 
     if (search) {
-      query.title = { $regex: search, $options: 'i' }; // case-insensitive
+      query.title = { $regex: search, $options: 'i' }; 
     }
 
     if (category) {

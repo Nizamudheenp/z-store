@@ -6,9 +6,14 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import ProductDetails from './pages/ProductDetails'
 import AdminRoute from './components/AdminRoute'
+import ProtectedRoute from './components/ProtectedRoute'
 import ProductList from './pages/admin/ProductList'
 import EditProduct from './pages/admin/EditProduct'
 import AddProduct from './pages/admin/AddProduct'
+import CartPage from './pages/CartPage'
+import CheckoutPage from './pages/CheckoutPage'
+import SuccessPage from './pages/SuccessPage'
+import MyOrdersPage from './pages/MyOrdersPage'
 
 function App() {
   return (
@@ -20,6 +25,30 @@ function App() {
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
+
+          <Route path="/cart" element={
+            <ProtectedRoute>
+              <CartPage />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/my-orders" element={
+            <ProtectedRoute>
+              <MyOrdersPage />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/checkout" element={
+            <ProtectedRoute>
+              <CheckoutPage />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/success" element={
+            <ProtectedRoute>
+              <SuccessPage />
+            </ProtectedRoute>
+          } />
 
           <Route path="/admin/products" element={
             <AdminRoute>

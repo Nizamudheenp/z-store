@@ -28,7 +28,7 @@ const Navbar = () => {
               <>
                 <Link to="/cart">Cart</Link>
                 <Link to="/wishlist">Wishlist</Link>
-                <Link to="/orders">My Orders</Link>
+                <Link to="/my-orders">My Orders</Link>
               </>
             )}
             <button onClick={handleLogout}>Logout</button>
