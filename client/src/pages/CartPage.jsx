@@ -38,6 +38,18 @@ const CartPage = () => {
     navigate('/checkout');
   };
 
+  const handleQuantityChange = async (productId, newQuantity) => {
+  try {
+    await api.post('/cart/update', { productId, quantity: Number(newQuantity) });
+    const res = await api.get('/cart');
+    dispatch(setCart(res.data.items));
+    toast.success('Quantity updated');
+  } catch {
+    toast.error('Failed to update quantity');
+  }
+};
+
+
   return (
     <div className="p-8 max-w-4xl mx-auto">
       <h2 className="text-2xl font-bold mb-4">Your Cart</h2>
@@ -54,6 +66,14 @@ const CartPage = () => {
                   <div>
                     <h3 className="font-bold">{item.product.title}</h3>
                     <p>₹ {item.product.price} x {item.quantity}</p>
+
+                    <input
+                      type="number"
+                      min="1"
+                      value={item.quantity}
+                      onChange={e => handleQuantityChange(item.product._id, e.target.value)}
+                      className="border rounded px-2 py-1 w-20 mt-2"
+                    />
                   </div>
                 </div>
                 <button
@@ -63,6 +83,7 @@ const CartPage = () => {
                   Remove
                 </button>
               </li>
+
             ))}
           </ul>
 

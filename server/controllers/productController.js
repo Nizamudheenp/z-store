@@ -156,3 +156,13 @@ exports.getTopSellingProducts = async (req, res) => {
     res.status(500).json({ message: 'Failed to fetch top selling products' });
   }
 };
+
+exports.getInventory = async (req, res) => {
+  try {
+    const products = await productDB.find({}, 'title stock');
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch inventory' });
+  }
+};
+

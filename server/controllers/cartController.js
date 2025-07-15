@@ -52,3 +52,30 @@ exports.removeFromCart = async (req, res) => {
     res.status(500).json({ message: 'Error removing item' });
   }
 };
+exports.updateQuantity = async (req, res) => {
+  try {
+    const { productId, quantity } = req.body;
+    const userId = req.user._id;
+
+    if (quantity <= 0) {
+      return res.status(400).json({ message: 'Quantity must be at least 1' });
+    }
+
+    const cart = await cartDB.findOne({ user: userId });
+
+    if (!cart) return res.status(404).json({ message: 'Cart not found' });
+
+    const item = cart.items.find(i => i.product.toString() === productId);
+
+    if (!item) return res.status(404).json({ message: 'Product not in cart' });
+
+    item.quantity = quantity;
+
+    await cart.save();
+
+    res.json({ message: 'Quantity updated', cart });
+  } catch (err) {
+    res.status(500).json({ message: 'Error updating quantity' });
+  }
+};
+

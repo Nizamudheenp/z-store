@@ -90,3 +90,22 @@ exports.updateOrderStatus = async (req, res) => {
     res.status(500).json({ message: 'Failed to update status' });
   }
 };
+
+exports.getOrdersPerDay = async (req, res) => {
+  try {
+    const result = await OrderDB.aggregate([
+      {
+        $group: {
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" }},
+          totalOrders: { $sum: 1 }
+        }
+      },
+      { $sort: { _id: 1 } }
+    ]);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch orders per day' });
+  }
+};
+
+

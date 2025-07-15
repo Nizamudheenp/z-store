@@ -15,6 +15,7 @@ import CheckoutPage from './pages/CheckoutPage'
 import SuccessPage from './pages/SuccessPage'
 import MyOrdersPage from './pages/MyOrdersPage'
 import WishlistPage from './pages/WishlistPage'
+import AdminDashboard from './pages/admin/AdminDashboard'
 
 function App() {
   return (
@@ -57,7 +58,11 @@ function App() {
             </ProtectedRoute>
           } />
 
-
+          <Route path="/admin/dashboard" element={
+            <AdminRoute>
+              <AdminDashboard />
+            </AdminRoute>
+          } />
           <Route path="/admin/products" element={
             <AdminRoute>
               <ProductList />
