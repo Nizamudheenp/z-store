@@ -1,15 +1,6 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { clearCart } from '../features/cart/cartSlice';
 import { Link } from 'react-router-dom';
 
 const SuccessPage = () => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(clearCart());
-  }, [dispatch]);
-
   return (
     <div className="p-8 text-center">
       <h2 className="text-3xl font-bold text-green-600">Payment Successful!</h2>

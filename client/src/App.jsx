@@ -14,6 +14,7 @@ import CartPage from './pages/CartPage'
 import CheckoutPage from './pages/CheckoutPage'
 import SuccessPage from './pages/SuccessPage'
 import MyOrdersPage from './pages/MyOrdersPage'
+import WishlistPage from './pages/WishlistPage'
 
 function App() {
   return (
@@ -49,6 +50,13 @@ function App() {
               <SuccessPage />
             </ProtectedRoute>
           } />
+
+          <Route path="/wishlist" element={
+            <ProtectedRoute>
+              <WishlistPage />
+            </ProtectedRoute>
+          } />
+
 
           <Route path="/admin/products" element={
             <AdminRoute>

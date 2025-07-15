@@ -74,6 +74,16 @@ exports.getProducts = async (req, res) => {
   }
 };
 
+exports.getCategories = async (req, res) => {
+  try {
+    const categories = await productDB.distinct('category');
+    res.json(categories.map(c => ({ _id: c, name: c })));
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch categories' });
+  }
+};
+
+
 exports.getProductById = async (req, res) => {
     try {
         const { id } = req.params;

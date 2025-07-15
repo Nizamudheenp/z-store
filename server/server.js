@@ -10,9 +10,6 @@ app.use(cors({
     credentials: true
 }));
 
-const stripeWebhookRoute = require('./routes/stripeWebhookRoute');
-app.use('/api/webhook', stripeWebhookRoute); 
-
 
 app.use(express.json());
 

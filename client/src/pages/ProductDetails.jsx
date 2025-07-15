@@ -36,6 +36,16 @@ const ProductDetails = () => {
     }
   };
 
+  const handleToggleWishlist = async () => {
+  try {
+    const res = await api.post('/wishlist/toggle', { productId: selectedProduct._id });
+    toast.success(res.data.message);
+  } catch (err) {
+    toast.error(err.response?.data?.message || 'Wishlist action failed');
+  }
+};
+
+
   if (!selectedProduct) return <div className="p-8">Loading...</div>;
 
   return (
@@ -51,6 +61,13 @@ const ProductDetails = () => {
       >
         Add to Cart
       </button>
+      <button
+  onClick={handleToggleWishlist}
+  className="mt-2 bg-pink-500 text-white px-6 py-2 rounded hover:bg-pink-600 ml-4"
+>
+  ❤️ 
+</button>
+
     </div>
   );
 };
