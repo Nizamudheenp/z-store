@@ -19,7 +19,6 @@ const CheckoutForm = () => {
   const elements = useElements();
   const [loading, setLoading] = useState(false);
 
-  // New: Address state
   const [address, setAddress] = useState({
     fullName: user.name || '',
     line1: '',
@@ -37,11 +36,9 @@ const CheckoutForm = () => {
     setLoading(true);
 
     try {
-      // Create Payment Intent
       const res = await api.post('/orders/create-payment-intent', { items });
       const clientSecret = res.data.clientSecret;
 
-      // Confirm Card Payment
       const result = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: elements.getElement(CardElement),
@@ -61,7 +58,6 @@ const CheckoutForm = () => {
         toast.error(result.error.message);
         setLoading(false);
       } else {
-        // Create Order
         await api.post('/orders/create', {
           userId: user._id,
           items: items.map(item => ({
@@ -81,7 +77,7 @@ const CheckoutForm = () => {
 
         dispatch(clearCart());
         toast.success('Payment Successful');
-        navigate('/my-orders');
+        navigate('/success');
       }
     } catch (err) {
       toast.error('Payment failed');
@@ -90,65 +86,36 @@ const CheckoutForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-8 max-w-xl mx-auto space-y-4">
-      <h2 className="text-2xl font-bold mb-4">Shipping Address</h2>
+    <form 
+      onSubmit={handleSubmit} 
+      className="bg-white p-8 max-w-xl mx-auto rounded-2xl shadow-lg mt-12 space-y-5"
+    >
+      <h2 className="text-2xl font-bold text-[#4C1D95] mb-4 text-center">Shipping Address</h2>
 
-      <input
-        type="text"
-        name="fullName"
-        placeholder="Full Name"
-        value={address.fullName}
-        onChange={handleChange}
-        className="w-full p-2 border rounded"
-        required
-      />
+      {["fullName", "line1", "city", "postalCode", "country"].map((field) => (
+        <input
+          key={field}
+          type="text"
+          name={field}
+          placeholder={field === "line1" ? "Address" : field === "postalCode" ? "Postal Code" : field === "country" ? "Country (e.g., IN)" : "Full Name"}
+          value={address[field]}
+          onChange={handleChange}
+          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8B5CF6] transition"
+          required
+        />
+      ))}
 
-      <input
-        type="text"
-        name="line1"
-        placeholder="Address"
-        value={address.line1}
-        onChange={handleChange}
-        className="w-full p-2 border rounded"
-        required
-      />
+      <h2 className="text-2xl font-bold text-[#4C1D95] mt-8 mb-4 text-center">Payment Details</h2>
 
-      <input
-        type="text"
-        name="city"
-        placeholder="City"
-        value={address.city}
-        onChange={handleChange}
-        className="w-full p-2 border rounded"
-        required
-      />
-
-      <input
-        type="text"
-        name="postalCode"
-        placeholder="Postal Code"
-        value={address.postalCode}
-        onChange={handleChange}
-        className="w-full p-2 border rounded"
-        required
-      />
-
-      <input
-        type="text"
-        name="country"
-        placeholder="Country (e.g., IN)"
-        value={address.country}
-        onChange={handleChange}
-        className="w-full p-2 border rounded"
-        required
-      />
-
-      <h2 className="text-2xl font-bold mt-6 mb-4">Payment Details</h2>
-      <CardElement className="p-4 border rounded mb-4" />
+      <div className="bg-gray-100 p-4 rounded-lg border">
+        <CardElement className="p-2 bg-white rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#8B5CF6]" />
+      </div>
 
       <button
         disabled={!stripe || loading}
-        className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 w-full"
+        className={`w-full mt-6 px-6 py-3 rounded-xl text-white text-lg transition 
+          ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#8B5CF6] hover:bg-[#7C3AED] hover:scale-105'}
+        `}
       >
         {loading ? 'Processing...' : 'Pay Now'}
       </button>

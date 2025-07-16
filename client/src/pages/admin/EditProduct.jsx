@@ -13,8 +13,12 @@ const EditProduct = () => {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const res = await api.get(`/products/${id}`);
-      setForm({ title: res.data.title, price: res.data.price });
+      try {
+        const res = await api.get(`/products/${id}`);
+        setForm({ title: res.data.title, price: res.data.price });
+      } catch {
+        toast.error('Failed to fetch product');
+      }
     };
     fetchProduct();
   }, [id]);
@@ -25,19 +29,43 @@ const EditProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await api.put(`/products/${id}`, form);
-    toast.success('Product updated');
-    navigate('/admin/products');
+    try {
+      await api.put(`/products/${id}`, form);
+      toast.success('Product updated');
+      navigate('/admin/dashboard');
+    } catch {
+      toast.error('Failed to update product');
+    }
   };
 
   return (
-    <div className="p-8">
-      <h1 className="text-2xl mb-4 font-bold">Edit Product</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input name="title" value={form.title} onChange={handleChange} placeholder="Title" className="border p-2 w-full" />
-        <input name="price" value={form.price} onChange={handleChange} placeholder="Price" className="border p-2 w-full" />
-        <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">Update</button>
-      </form>
+    <div className="min-h-screen bg-[#F9F5FF] flex items-center justify-center px-4 pt-20">
+      <div className="bg-white rounded-3xl shadow-xl p-8 w-full max-w-2xl">
+        <h1 className="text-2xl font-bold text-[#4C1D95] mb-6">Edit Product</h1>
+
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <input
+            name="title"
+            value={form.title}
+            onChange={handleChange}
+            placeholder="Product Title"
+            className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8B5CF6] bg-white shadow-sm"
+          />
+          <input
+            name="price"
+            value={form.price}
+            onChange={handleChange}
+            placeholder="Price"
+            className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8B5CF6] bg-white shadow-sm"
+          />
+          <button
+            type="submit"
+            className="md:col-span-2 w-full bg-[#8B5CF6] hover:bg-[#7C3AED] text-white py-3 rounded-xl font-semibold transition duration-200"
+          >
+            Update Product
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

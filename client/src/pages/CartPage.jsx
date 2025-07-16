@@ -39,65 +39,78 @@ const CartPage = () => {
   };
 
   const handleQuantityChange = async (productId, newQuantity) => {
-  try {
-    await api.post('/cart/update', { productId, quantity: Number(newQuantity) });
-    const res = await api.get('/cart');
-    dispatch(setCart(res.data.items));
-    toast.success('Quantity updated');
-  } catch {
-    toast.error('Failed to update quantity');
-  }
-};
-
+    try {
+      await api.post('/cart/update', { productId, quantity: Number(newQuantity) });
+      const res = await api.get('/cart');
+      dispatch(setCart(res.data.items));
+      toast.success('Quantity updated');
+    } catch {
+      toast.error('Failed to update quantity');
+    }
+  };
 
   return (
-    <div className="p-8 max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Your Cart</h2>
+    <div className="pt-20 p-4 min-h-screen bg-[#F9F5FF]">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl md:text-3xl font-bold text-[#4C1D95] mb-8 text-center">Your Cart</h2>
 
-      {items.length === 0 ? (
-        <p>Your cart is empty. <Link to="/" className="text-blue-500 underline">Shop now</Link></p>
-      ) : (
-        <>
-          <ul className="space-y-4">
-            {items.map((item) => (
-              <li key={item.product._id} className="flex items-center justify-between border p-4 rounded">
-                <div className="flex items-center space-x-4">
-                  <img src={item.product.image} alt={item.product.title} className="w-16 h-16 object-cover rounded" />
-                  <div>
-                    <h3 className="font-bold">{item.product.title}</h3>
-                    <p>₹ {item.product.price} x {item.quantity}</p>
-
-                    <input
-                      type="number"
-                      min="1"
-                      value={item.quantity}
-                      onChange={e => handleQuantityChange(item.product._id, e.target.value)}
-                      className="border rounded px-2 py-1 w-20 mt-2"
-                    />
-                  </div>
-                </div>
-                <button
-                  onClick={() => handleRemove(item.product._id)}
-                  className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+        {items.length === 0 ? (
+          <p className="text-center text-gray-500">
+            Your cart is empty.{" "}
+            <Link to="/" className="text-[#8B5CF6] underline hover:text-[#7C3AED]">
+              Shop now
+            </Link>
+          </p>
+        ) : (
+          <>
+            <ul className="space-y-6">
+              {items.map((item) => (
+                <li 
+                  key={item.product._id} 
+                  className="bg-white rounded-2xl shadow-md p-4 flex items-center justify-between hover:shadow-lg transition duration-300"
                 >
-                  Remove
-                </button>
-              </li>
+                  <div className="flex items-center gap-4">
+                    <img 
+                      src={item.product.image} 
+                      alt={item.product.title} 
+                      className="w-20 h-20 object-contain rounded-lg"
+                    />
+                    <div>
+                      <h3 className="font-semibold text-lg">{item.product.title}</h3>
+                      <p className="text-gray-600 text-sm">₹ {item.product.price} × {item.quantity}</p>
 
-            ))}
-          </ul>
+                      <input
+                        type="number"
+                        min="1"
+                        value={item.quantity}
+                        onChange={e => handleQuantityChange(item.product._id, e.target.value)}
+                        className="mt-2 border border-gray-300 rounded px-3 py-1 w-20 focus:outline-none focus:ring-2 focus:ring-[#8B5CF6]"
+                      />
+                    </div>
+                  </div>
 
-          <div className="mt-6 text-right">
-            <p className="text-xl font-bold">Total: ₹ {totalPrice}</p>
-            <button
-              onClick={handleCheckout}
-              className="mt-4 bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700"
-            >
-              Proceed to Checkout
-            </button>
-          </div>
-        </>
-      )}
+                  <button
+                    onClick={() => handleRemove(item.product._id)}
+                    className="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600 transition"
+                  >
+                    Remove
+                  </button>
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-8 bg-white rounded-2xl shadow-md p-6 text-center">
+              <p className="text-xl font-bold text-gray-700">Total: ₹ {totalPrice}</p>
+              <button
+                onClick={handleCheckout}
+                className="mt-4 bg-[#8B5CF6] text-white px-8 py-3 rounded-xl hover:bg-[#7C3AED] hover:scale-105 transition-transform duration-200"
+              >
+                Proceed to Checkout
+              </button>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 };
