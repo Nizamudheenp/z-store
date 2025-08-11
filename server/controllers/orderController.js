@@ -10,7 +10,7 @@ exports.createPaymentIntent = async (req, res) => {
     let totalAmount = 0;
 
     for (const item of items) {
-      const product = await productDB.findById(item.product);  
+      const product = await productDB.findById(item.product);
       if (!product) {
         return res.status(404).json({ message: 'Product not found' });
       }
@@ -96,7 +96,7 @@ exports.getOrdersPerDay = async (req, res) => {
     const result = await OrderDB.aggregate([
       {
         $group: {
-          _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" }},
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
           totalOrders: { $sum: 1 }
         }
       },

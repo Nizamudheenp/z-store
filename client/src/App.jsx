@@ -20,60 +20,60 @@ function App() {
   return (
     <>
       <Navbar />
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path="/product/:id" element={<ProductDetails />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/register' element={<Register />} />
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
 
-          <Route path="/cart" element={
-            <ProtectedRoute>
-              <CartPage />
-            </ProtectedRoute>
-          } />
+        <Route path="/cart" element={
+          <ProtectedRoute>
+            <CartPage />
+          </ProtectedRoute>
+        } />
 
-          <Route path="/my-orders" element={
-            <ProtectedRoute>
-              <MyOrdersPage />
-            </ProtectedRoute>
-          } />
+        <Route path="/my-orders" element={
+          <ProtectedRoute>
+            <MyOrdersPage />
+          </ProtectedRoute>
+        } />
 
-          <Route path="/checkout" element={
-            <ProtectedRoute>
-              <CheckoutPage />
-            </ProtectedRoute>
-          } />
+        <Route path="/checkout" element={
+          <ProtectedRoute>
+            <CheckoutPage />
+          </ProtectedRoute>
+        } />
 
-          <Route path="/success" element={
-            <ProtectedRoute>
-              <SuccessPage />
-            </ProtectedRoute>
-          } />
+        <Route path="/success" element={
+          <ProtectedRoute>
+            <SuccessPage />
+          </ProtectedRoute>
+        } />
 
-          <Route path="/wishlist" element={
-            <ProtectedRoute>
-              <WishlistPage />
-            </ProtectedRoute>
-          } />
+        <Route path="/wishlist" element={
+          <ProtectedRoute>
+            <WishlistPage />
+          </ProtectedRoute>
+        } />
 
-          <Route path="/admin/dashboard" element={
-            <AdminRoute>
-              <AdminDashboard />
-            </AdminRoute>
-          } />
-  
-          <Route path="/admin/edit-product/:id" element={
-            <AdminRoute>
-              <EditProduct />
-            </AdminRoute>
-          } />
-          <Route path="/admin/add-product" element={
-            <AdminRoute>
-              <AddProduct />
-            </AdminRoute>
-          } />
+        <Route path="/admin/dashboard" element={
+          <AdminRoute>
+            <AdminDashboard />
+          </AdminRoute>
+        } />
 
-        </Routes>
+        <Route path="/admin/edit-product/:id" element={
+          <AdminRoute>
+            <EditProduct />
+          </AdminRoute>
+        } />
+        <Route path="/admin/add-product" element={
+          <AdminRoute>
+            <AddProduct />
+          </AdminRoute>
+        } />
+
+      </Routes>
     </>
   )
 }

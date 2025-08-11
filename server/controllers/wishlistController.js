@@ -11,9 +11,9 @@ exports.toggleWishlist = async (req, res) => {
     const exists = user.wishlist.includes(productId);
 
     if (exists) {
-      user.wishlist.pull(productId); 
+      user.wishlist.pull(productId);
     } else {
-      user.wishlist.push(productId); 
+      user.wishlist.push(productId);
     }
 
     await user.save();
